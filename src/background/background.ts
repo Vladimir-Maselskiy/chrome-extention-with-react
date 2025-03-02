@@ -1,4 +1,4 @@
-import { injectScript } from './utils/injectScript';
+import { registerScript } from './utils/registerScript';
 chrome.runtime.onMessage.addListener((message, sender, response) => {
   const { type, data } = message;
 
@@ -16,16 +16,33 @@ chrome.runtime.onMessage.addListener((message, sender, response) => {
   return true;
 });
 
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-  if (changeInfo.status === 'complete' && tab.url) {
-    const allowedDomains = ['www.reddit.com'];
-    const url = new URL(tab.url);
+function isUserScriptsAvailable() {
+  try {
+    // Property access which throws if developer mode is not enabled.
+    chrome.userScripts &&
+      chrome.userScripts.configureWorld({
+        csp: "script-src 'self'",
+        messaging: true,
+      });
 
-    if (allowedDomains.includes(url.hostname)) {
-      injectScript(tabId);
-    }
+    chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+      if (changeInfo.status === 'complete' && tab.url) {
+        const allowedDomains = ['www.reddit.com'];
+        const url = new URL(tab.url);
+
+        if (allowedDomains.includes(url.hostname)) {
+          registerScript(tabId);
+        }
+      }
+    });
+    return true;
+  } catch {
+    console.error('User scripts are not available.');
+    // Not available.
+    return false;
   }
-});
+}
+isUserScriptsAvailable();
 
 async function getTargetsByKey(key: string) {
   const result = await getFromLocalstorage(key);

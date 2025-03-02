@@ -1,2 +1,1 @@
-const bodyRef = document.body;
-bodyRef.style.backgroundColor = 'red';
+console.log('[test] start');
