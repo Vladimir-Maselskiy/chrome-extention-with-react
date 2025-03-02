@@ -1,5 +1,5 @@
 import { registerScript } from './utils/registerScript';
-chrome.runtime.onMessage.addListener((message, sender, response) => {
+chrome.runtime.onUserScriptMessage.addListener((message, sender, response) => {
   const { type, data } = message;
 
   if (type === 'GET_TARGETS_BY_KEY') {
@@ -36,7 +36,7 @@ async function isUserScriptsAvailable() {
 
     chrome.userScripts &&
       chrome.userScripts.configureWorld({
-        csp: "script-src 'self'",
+        // csp: "script-src 'self'",
         messaging: true,
       });
 

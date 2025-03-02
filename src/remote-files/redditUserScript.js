@@ -125,19 +125,17 @@ let observer = null;
 
   startScript();
 
-  chrome.runtime.onUserScriptMessage.addListener(
-    async (request, sender, response) => {
-      if (
-        request.type === 'REINIT_BLOCKING' &&
-        request.webResourceKey === webResourceKey
-      ) {
-        isBlocking = request.isBlocking;
-        startScript();
+  chrome.runtime.onMessage.addListener(async (request, sender, response) => {
+    if (
+      request.type === 'REINIT_BLOCKING' &&
+      request.webResourceKey === webResourceKey
+    ) {
+      isBlocking = request.isBlocking;
+      startScript();
 
-        return response(true);
-      }
+      return response(true);
     }
-  );
+  });
 
   console.log('[reddit] isBlocking', isBlocking);
 })();
