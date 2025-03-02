@@ -1,5 +1,7 @@
 'use strict';
 
+console.log('[reddit] start');
+
 const webResourceKey = '1';
 const selectors = [
   'div',
