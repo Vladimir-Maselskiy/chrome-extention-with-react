@@ -1,3 +1,4 @@
+import { injectScript } from './utils/injectScript';
 chrome.runtime.onMessage.addListener((message, sender, response) => {
   const { type, data } = message;
 
@@ -13,6 +14,17 @@ chrome.runtime.onMessage.addListener((message, sender, response) => {
     getIsCurrentDomainBlocking(data).then(resp => response(resp));
   }
   return true;
+});
+
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+  if (changeInfo.status === 'complete' && tab.url) {
+    const allowedDomains = ['www.reddit.com'];
+    const url = new URL(tab.url);
+
+    if (allowedDomains.includes(url.hostname)) {
+      injectScript(tabId);
+    }
+  }
 });
 
 async function getTargetsByKey(key: string) {
