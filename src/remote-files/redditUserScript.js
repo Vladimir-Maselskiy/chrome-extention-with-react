@@ -32,10 +32,6 @@ let isObserveStarted = false;
 let observer = null;
 
 (async () => {
-  await chrome.userScripts.configureWorld({
-    messaging: true,
-  });
-
   let isBlocking = await chrome.runtime.sendMessage({
     type: 'GET_IS_CURRENT_DOMAIN_BLOCKING',
     data: webResourceKey,

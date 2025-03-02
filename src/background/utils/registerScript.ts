@@ -10,19 +10,17 @@ export async function registerScript(tabId: number) {
     if (!scriptContent) return;
 
     const userScripts = await chrome.userScripts.getScripts({ ids: ['test'] });
-    if (userScripts.length > 0) {
-      console.log('user script already registered');
-      return;
-    }
 
-    chrome.userScripts.register([
-      {
-        id: 'test',
-        matches: ['*://*/*'],
-        js: [{ code: scriptContent }],
-      },
-    ]);
-    console.log('user script registered');
+    if (userScripts.length === 0) {
+      chrome.userScripts.register([
+        {
+          id: 'test',
+          matches: ['*://*/*'],
+          js: [{ code: scriptContent }],
+        },
+      ]);
+      console.log('user script registered');
+    }
 
     // chrome.scripting.executeScript({
     //   target: { tabId },

@@ -16,25 +16,30 @@ chrome.runtime.onMessage.addListener((message, sender, response) => {
   return true;
 });
 
-function isUserScriptsAvailable() {
+async function isUserScriptsAvailable() {
   try {
     // Property access which throws if developer mode is not enabled.
+
+    await new Promise(resolve => {
+      chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+        if (changeInfo.status === 'complete' && tab.url) {
+          const allowedDomains = ['www.reddit.com'];
+          const url = new URL(tab.url);
+
+          if (allowedDomains.includes(url.hostname)) {
+            await registerScript(tabId);
+            resolve(true);
+          }
+        }
+      });
+    });
+
     chrome.userScripts &&
       chrome.userScripts.configureWorld({
         csp: "script-src 'self'",
         messaging: true,
       });
 
-    chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-      if (changeInfo.status === 'complete' && tab.url) {
-        const allowedDomains = ['www.reddit.com'];
-        const url = new URL(tab.url);
-
-        if (allowedDomains.includes(url.hostname)) {
-          registerScript(tabId);
-        }
-      }
-    });
     return true;
   } catch {
     console.error('User scripts are not available.');
@@ -46,7 +51,7 @@ isUserScriptsAvailable();
 
 chrome.runtime.onInstalled.addListener(details => {
   if (details.reason === 'update') {
-    // isUserScriptsAvailable();
+    isUserScriptsAvailable();
   }
 });
 
