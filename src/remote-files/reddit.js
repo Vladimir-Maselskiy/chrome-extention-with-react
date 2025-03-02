@@ -13,8 +13,6 @@ const selectors = [
   'h6',
   'li',
   'a',
-  //   'reddit-recent-pages', //shadowRoot
-  //   'shreddit-subreddit-header', //shadowRoot
   'img',
 ];
 
@@ -121,35 +119,6 @@ let observer = null;
       return targetContent;
     }
     return el;
-
-    // if (el && el.shadowRoot) {
-    //   console.log('[reddit] targetElement shadowRoot top', el);
-    //   el.shadowRoot.querySelectorAll(selectors.join(',')).forEach(el => {
-    //     console.log('[reddit] targetElement shadowRoot', el);
-    //     const targetElement =
-    //       el.children.length &&
-    //       el.textContent.toLowerCase().includes(target.target.toLowerCase())
-    //         ? el
-    //         : null;
-
-    //     if (targetElement) {
-    //       targetElement.style.background = 'yellow';
-    //       targetElement.classList.add('silent-blocking-extension123');
-    //       targetElement.setAttribute(
-    //         'data-silent-blocking-extension',
-    //         'true'
-    //       );
-    //     }
-    //   });
-    // }
-    // if (el?.nodeName === 'IMG') {
-    //   const textContent = el.alt;
-    //   if (textContent.toLowerCase().includes(target.target.toLowerCase())) {
-    //     el.style.maxWidth = '30%';
-    //     el.classList.add('silent-blocking-extension');
-    //     el.setAttribute('data-silent-blocking-extension', 'true');
-    //   }
-    // }
   }
 
   startScript();
