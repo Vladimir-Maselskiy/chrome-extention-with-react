@@ -27,7 +27,7 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["style.css"],
+      "resources": ["style.css", "*.js"],
       "matches": ["*://*.reddit.com/*"]
     }
   ]

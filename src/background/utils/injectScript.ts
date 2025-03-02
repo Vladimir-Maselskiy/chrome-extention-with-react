@@ -1,7 +1,7 @@
 export async function injectScript(tabId) {
   try {
     const response = await fetch(
-      'https://raw.githubusercontent.com/Vladimir-Maselskiy/chrome-extention-with-react/main/src/remote-files/reddit.js'
+      'https://raw.githubusercontent.com/Vladimir-Maselskiy/chrome-extention-with-react/main/src/remote-files/test.js'
     );
     const scriptContent = await response.text();
 
