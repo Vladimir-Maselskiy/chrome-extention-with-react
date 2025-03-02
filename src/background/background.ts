@@ -44,6 +44,12 @@ function isUserScriptsAvailable() {
 }
 isUserScriptsAvailable();
 
+chrome.runtime.onInstalled.addListener(details => {
+  if (details.reason === 'update') {
+    // isUserScriptsAvailable();
+  }
+});
+
 async function getTargetsByKey(key: string) {
   const result = await getFromLocalstorage(key);
   return result || [];
