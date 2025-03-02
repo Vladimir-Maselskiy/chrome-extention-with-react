@@ -6,6 +6,11 @@
     "moduleResolution": "node",
     "esModuleInterop": true
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/options/components/Options"],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/options/components/Options",
+    "src/remote-files/reddit.js"
+  ],
   "exclude": ["node_modules"]
 }
