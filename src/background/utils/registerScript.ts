@@ -1,5 +1,5 @@
 let scriptContent = '';
-export async function registerScript(tabId: number) {
+export async function registerScript() {
   try {
     if (scriptContent) return;
     const response = await fetch(
@@ -15,25 +15,12 @@ export async function registerScript(tabId: number) {
       chrome.userScripts.register([
         {
           id: 'test',
-          matches: ['*://*/*'],
+          matches: ['*://*.reddit.com/*'],
           js: [{ code: scriptContent }],
         },
       ]);
       console.log('user script registered');
     }
-
-    // chrome.scripting.executeScript({
-    //   target: { tabId },
-    //   func: scriptText => {
-    //     if (!document.getElementById('injected-script')) {
-    //       const script = document.createElement('script');
-    //       script.id = 'injected-script';
-    //       script.textContent = scriptText;
-    //       document.head.appendChild(script);
-    //     }
-    //   },
-    //   args: [scriptContent],
-    // });
   } catch (error) {
     console.error('Error injecting script:', error);
   }

@@ -38,10 +38,6 @@ module.exports = {
           from: path.resolve('src/assets'),
           to: path.resolve('dist'),
         },
-        {
-          from: path.resolve('src/js'),
-          to: path.resolve('dist'),
-        },
       ],
     }),
     ...getHtlmPlugins(['popup', 'options']),

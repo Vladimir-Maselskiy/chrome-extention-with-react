@@ -14,7 +14,7 @@
     "default_title": "A-React-Title",
     "default_popup": "popup.html"
   },
-  "permissions": ["storage", "tabs", "scripting", "activeTab", "userScripts"],
+  "permissions": ["storage", "tabs", "userScripts"],
   "host_permissions": ["<all_urls>"],
   "background": {
     "service_worker": "background.js"
@@ -24,16 +24,6 @@
       "matches": ["*://*.reddit.com/*"],
       "css": ["style.css"],
       "all_frames": true
-    }
-  ],
-  "web_accessible_resources": [
-    {
-      "resources": ["style.css", "*.js"],
-      "matches": ["*://*.reddit.com/*"]
-    },
-    {
-      "resources": ["*.js"],
-      "matches": ["<all_urls>"]
     }
   ]
 }

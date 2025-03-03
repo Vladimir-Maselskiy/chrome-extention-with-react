@@ -1,5 +1,5 @@
 import { registerScript } from './utils/registerScript';
-chrome.runtime.onUserScriptMessage.addListener((message, sender, response) => {
+chrome.runtime.onMessage.addListener((message, sender, response) => {
   const { type, data } = message;
 
   if (type === 'GET_TARGETS_BY_KEY') {
@@ -15,28 +15,23 @@ chrome.runtime.onUserScriptMessage.addListener((message, sender, response) => {
   }
   return true;
 });
+chrome.runtime.onUserScriptMessage.addListener((message, sender, response) => {
+  const { type, data } = message;
+
+  if (type === 'GET_TARGETS_BY_KEY') {
+    getTargetsByKey(data).then(resp => response(resp));
+  } else if (type === 'GET_IS_CURRENT_DOMAIN_BLOCKING') {
+    getIsCurrentDomainBlocking(data).then(resp => response(resp));
+  }
+  return true;
+});
 
 async function isUserScriptsAvailable() {
   try {
-    // Property access which throws if developer mode is not enabled.
-
-    await new Promise(resolve => {
-      chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
-        if (changeInfo.status === 'complete' && tab.url) {
-          const allowedDomains = ['www.reddit.com'];
-          const url = new URL(tab.url);
-
-          if (allowedDomains.includes(url.hostname)) {
-            await registerScript(tabId);
-            resolve(true);
-          }
-        }
-      });
-    });
+    await registerScript();
 
     chrome.userScripts &&
       chrome.userScripts.configureWorld({
-        // csp: "script-src 'self'",
         messaging: true,
       });
 
@@ -47,12 +42,9 @@ async function isUserScriptsAvailable() {
     return false;
   }
 }
-isUserScriptsAvailable();
 
 chrome.runtime.onInstalled.addListener(details => {
-  if (details.reason === 'update') {
-    isUserScriptsAvailable();
-  }
+  isUserScriptsAvailable();
 });
 
 async function getTargetsByKey(key: string) {
